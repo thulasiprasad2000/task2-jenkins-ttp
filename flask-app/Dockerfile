@@ -1,6 +1,5 @@
 # Use Python 3.7 as a base image
 FROM python:3.7
-
 WORKDIR /app
 # Copy contents into image
 COPY . .

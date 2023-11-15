@@ -9,3 +9,5 @@ ENV MYSQL_ROOT_PASSWORD=supersecret-password
 # All scripts copied to docker-entrypoint-initdb.d/ are automatically
 # executed during container startup
 COPY CreateTable.sql docker-entrypoint-initdb.d/CreateTable.sql
+
+
