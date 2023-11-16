@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         YOUR_NAME = credentials("YOUR_NAME")
+        MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD")
     }
   
     stages {
@@ -37,6 +38,7 @@ pipeline {
                 docker pull thulasiprasad2000/task2-nginx
 
                 export YOUR_NAME=${YOUR_NAME}
+                export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
                 docker network rm task2-net && echo "removed network" || echo "network already removed"
                 docker network create task2-net
@@ -50,8 +52,8 @@ pipeline {
                 docker stop mysql && echo "Stopped mysql" || echo "mysql is not running"
                 docker rm mysql && echo "removed mysql" || echo "mysql does not exist"
 
-                docker run -d --name mysql --network task2-net -e MYSQL_ROOT_PASSWORD=PaSSword123 thulasiprasad2000/task2-db
-                docker run -d --name flask-app  --network task2-net -e MYSQL_ROOT_PASSWORD=PaSSword123 thulasiprasad2000/task2-app
+                docker run -d --name mysql --network task2-net -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} thulasiprasad2000/task2-db
+                docker run -d --name flask-app  --network task2-net -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} thulasiprasad2000/task2-app
                 docker run -d --name nginx  --network task2-net -p 80:80 thulasiprasad2000/task2-nginx
                
                 '''
