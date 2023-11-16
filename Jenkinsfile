@@ -31,7 +31,13 @@ pipeline {
             steps {
                 sh '''
                 ssh jenkins@thulasi-deploy <<EOF
+
+                docker pull thulasiprasad2000/task2-app
+                docker pull thulasiprasad2000/task2-db
+                docker pull thulasiprasad2000/task2-nginx
+
                 export YOUR_NAME=${YOUR_NAME}
+
                 docker network rm task2-net && echo "removed network" || echo "network already removed"
                 docker network create task2-net
 
