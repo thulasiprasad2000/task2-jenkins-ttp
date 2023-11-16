@@ -9,6 +9,7 @@ pipeline {
             steps {
                 sh '''
                 echo 'this is test message from Thulasi from jenkinsfile - task2'
+                echo 'this is test message from Thulasi from jenkinsfile - task2 second page'
                 docker build -t thulasiprasad2000/task2-db db
                 docker build -t thulasiprasad2000/task2-app flask-app
                 docker build -t thulasiprasad2000/task2-nginx nginx
