@@ -8,6 +8,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                echo "test"
                 docker build -t thulasiprasad2000/task2-db db
                 docker build -t thulasiprasad2000/task2-app flask-app
                 '''
