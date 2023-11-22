@@ -9,8 +9,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                echo 'this is test message from Thulasi from jenkinsfile - task2'
-                echo 'this is test message from Thulasi from jenkinsfile - task2 second page'
                 docker build -t thulasiprasad2000/task2-db db
                 docker build -t thulasiprasad2000/task2-app flask-app
                 docker build -t thulasiprasad2000/task2-nginx nginx
@@ -31,31 +29,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                ssh jenkins@thulasi-deploy <<EOF
-
-                docker pull thulasiprasad2000/task2-app
-                docker pull thulasiprasad2000/task2-db
-                docker pull thulasiprasad2000/task2-nginx
-
-                export YOUR_NAME=${YOUR_NAME}
-                export MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-
-                docker network rm task2-net && echo "removed network" || echo "network already removed"
-                docker network create task2-net
-
-                docker stop nginx && echo "Stopped nginx" || echo "nginx is not running"
-                docker rm nginx && echo "removed nginx" || echo "nginx does not exist"
-
-                docker stop flask-app && echo "Stopped flask-app" || echo "flask-app is not running"
-                docker rm flask-app && echo "removed flask-app" || echo "flask-app does not exist"
-
-                docker stop mysql && echo "Stopped mysql" || echo "mysql is not running"
-                docker rm mysql && echo "removed mysql" || echo "mysql does not exist"
-
-                docker run -d --name mysql --network task2-net -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} thulasiprasad2000/task2-db
-                docker run -d --name flask-app  --network task2-net -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} thulasiprasad2000/task2-app
-                docker run -d --name nginx  --network task2-net -p 80:80 thulasiprasad2000/task2-nginx
-               
+                kubectl apply -f .
+                sleep 60
+                kubectl get services
                 '''
             }
 
