@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        YOUR_NAME = credentials("YOUR_NAME")
         MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD")
     }
   
@@ -11,7 +10,6 @@ pipeline {
                 sh '''
                 docker build -t thulasiprasad2000/task2-db db
                 docker build -t thulasiprasad2000/task2-app flask-app
-                docker build -t thulasiprasad2000/task2-nginx nginx
                 '''
             }
 
@@ -21,7 +19,6 @@ pipeline {
                 sh '''
                 docker push thulasiprasad2000/task2-app
                 docker push thulasiprasad2000/task2-db
-                docker push thulasiprasad2000/task2-nginx
                 '''
             }
 
@@ -29,7 +26,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                kubectl apply -f .
+                sed -e 's,{{password}},'${MYSQL_ROOT_PASSWORD}',g;' db-password.yaml | kubectl apply -f -
+                kubectl apply -f db-manifest.yaml
+                kubectl apply -f app-manifest.yaml
+                kubectl apply -f nginx-manifest.yaml
                 sleep 60
                 kubectl get services
                 '''

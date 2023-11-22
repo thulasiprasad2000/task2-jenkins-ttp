@@ -10,7 +10,10 @@ spec:
     name: flask-app
     env:
     - name: MYSQL_ROOT_PASSWORD
-      value: p@ssw0rd
+      valueFrom:
+        secretKeyRef:
+          name: db-root-password
+          key: password
 ---
 apiVersion: v1
 kind: Service
@@ -24,5 +27,4 @@ spec:
     app: flask-app
   ports:
   - port: 5000
-    targetPort: 5000
     protocol: TCP
