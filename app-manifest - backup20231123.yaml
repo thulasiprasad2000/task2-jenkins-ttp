@@ -1,18 +1,9 @@
-apiVersion: apps/v1
-kind: ReplicaSet
+apiVersion: v1
+kind: Pod
 metadata:
-  name: app-replicas
+  name: app
   labels:
-    task: task2
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: flask-app
-  template:
-    metadata:
-      labels:
-        app: flask-app
+    app: flask-app
 spec:
   containers:
   - image: thulasiprasad2000/task2-app
